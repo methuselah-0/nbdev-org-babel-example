@@ -57,3 +57,20 @@ to ipynb files to building the docs, you can do for example
 current ipynb files.
 
 
+
+## Emacs Python Setup Suggestions
+
+
+
+List of stuff that is useful for Python LP-programming in emacs:
+
+-   repl: interactively exploring and testing code (emacs-jupyter)
+-   version control (git)
+-   automatic check for the code's adherence to best practices and
+    syntax highlighting (flycheck-pycheckers)
+-   debugging, debugger (real-gud)
+-   code definition lookup (emacs-jupyter, ag)
+-   docs-generation (org-babel, nbdev, pandoc)
+-   code generation & completion (yasnippet, jedi)
+
+
