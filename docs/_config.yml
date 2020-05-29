@@ -61,4 +61,4 @@ sidebars:
 permalink: pretty
 
 theme: jekyll-theme-cayman
-baseurl: /ob_example/
+baseurl: /nbdev-org-babel-example/

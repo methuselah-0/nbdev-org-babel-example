@@ -10,7 +10,7 @@ modules = ["plotter/picture_output.py",
            "__init__.py",
            "utils/libutils.py"]
 
-doc_url = "https://methuselah-0.github.io/ob_example/"
+doc_url = "https://methuselah-0.github.io/nbdev-org-babel-example/"
 
 git_url = "https://github.com/methuselah-0/nbdev-org-babel-example/tree/master/"
 
