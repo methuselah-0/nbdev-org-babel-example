@@ -2,7 +2,7 @@ topnav:
 - title: Topnav
   items:
     - title: github
-      external_url: https://github.com/methuselah-0/ob_example/tree/master/
+      external_url: https://github.com/methuselah-0/nbdev-org-babel-example/tree/master/
 
 #Topnav dropdowns
 topnav_dropdowns:
