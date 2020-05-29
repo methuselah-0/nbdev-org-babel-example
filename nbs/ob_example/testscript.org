@@ -1,0 +1,499 @@
+#+PROPERTY: header-args:python :shebang "#!/usr/bin/env python3" :eval no-export :noweb no-export :mkdirp yes
+#+PROPERTY: header-args:jupyter-python :shebang "#!/usr/bin/env python3" :eval no-export :noweb no-export :mkdirp yes
+
+# #+REVEAL_ROOT: https://cdn.jsdelivr.net/npm/reveal.js
+#+REVEAL_ROOT: file:///home/user1/src/reveal.js
+# This needs locally available reveal.js files (no CDN files)! Instructions to set location of reveal.js..
+#+OPTIONS: reveal_single_file:t
+
+#+REVEAL_INIT_OPTIONS: width:1200, height:800, margin: 0.1, minScale:0.2, maxScale:2.5, transition:'cube'
+
+# file:///d:/reveal.js
+
+# Export defaults
+# Toggle TeX-like syntax for sub- and superscripts. If you write
+# "^:{}", b{b}b-:t will be interpreted, but the simple bbb-:t will be
+# left as it is (org-export-with-sub-superscripts).
+#+OPTIONS: ^:{}
+
+# Export with latex interpreted
+#+OPTIONS: tex:t
+# #+OPTIONS: tex:t
+
+# Export with footnotes
+#+OPTIONS: f:t
+
+# Export with emphasized text
+#+OPTIONS: *:t
+
+# nil does not export; t exports; verbatim keeps everything in verbatim (org-export-with-latex). 
+#+OPTIONS: tex:verbatim
+
+# Export with special strings
+# #+OPTIONS: -:t
+
+# Export with tables
+#+OPTIONS: |:t
+
+# Export with fixed-width
+#+OPTIONS: ::t
+
+# Only keep the first level in table-of-contents
+# #+OPTIONS: toc:1
+# edit: create separate
+#+OPTIONS: toc:nil
+
+#+TITLE: An org-babel example package
+#+SUMMARY: Literate Programming using org-babel and emacs-jupyter
+
+* A python package using org-babel and emacs-jupyter
+  :PROPERTIES:
+  :header-args: :noweb-ref picture_output.lib
+  :END:
+
+This example is adapted from the Readme of the package jupyter-mode,
+[[https://github.com/tmurph/jupyter-mode][ref]].
+
+The goal is to show how to write a literate program that integrates a
+function and displays it, as well as how to package it so that its'
+library functions can be used by other python programs.
+
+** Literate Module Pattern
+
+Using a properties-drawer we can accumulate individual source-blocks
+from all subheaders:
+
+#+begin_example
+  * testing emacs-jupyter special output
+    :PROPERTIES:
+    :header-args: :noweb-ref picture_output.lib
+    :END:
+#+end_example
+
+Noweb-refs are then used to insert src-blocks:
+
+#+BEGIN_SRC python :noweb-ref "" :session picoutput
+# default_exp plotter.picture_output
+#+END_SRC
+
+#+RESULTS:
+
+#+BEGIN_SRC python :session picoutput :tangle plotter/picture_output.py :noweb-ref "" :eval no-export
+# exports
+"""Use numpy and scipy to produce a picture"""
+#<<picture_output.imports>>#
+#+END_SRC
+
+** Main and Lib
+
+We put all the library functions after the imports:
+
+#+BEGIN_SRC python :session picoutput :tangle plotter/picture_output.py :noweb-ref "" :eval no-export
+#<<picture_output.lib>>#
+#+END_SRC
+
+Tests:
+
+#+BEGIN_SRC python :session picoutput :tangle plotter/test_picture_output.py :noweb-ref "" :eval no-export
+from ob_example.plotter.picture_output import *
+#<<picture_output.test>>#
+#+END_SRC
+
+And finally the main code. We add pass in the pattern in case we don't
+create any main-code
+
+#+BEGIN_SRC python :session picoutput :tangle plotter/picture_output.py :noweb-ref "" :eval no-export
+# exports
+def main():
+    pass
+    #<<picture_output.main>>#
+#+END_SRC
+
+#+RESULTS:
+
+** Exporting Functions
+
+We start by importing the =@export= "decorator" that we use to define
+public functions explicitly.
+
+This block when tangled is placed at the top in our module with all
+other imports.
+
+#+begin_example
+  ,#+BEGIN_SRC python :session picoutput :noweb-ref "picture_output.imports"
+#+end_example
+
+#+BEGIN_SRC python :session picoutput :noweb-ref "picture_output.imports"
+from ob_example.utils.libutils import export
+#+END_SRC
+
+#+RESULTS:
+
+** Package setup
+
+To create a python package we need to create an ~__init__.py~ file in
+the root of the package directory. Note the ~:tangle __init__.py~
+header argument. [[https://stackoverflow.com/a/49375740/7612826][Relative imports]].
+
+#+begin_example
+  ,#+BEGIN_SRC python :noweb-ref "" :tangle __init__.py
+#+end_example
+
+#+BEGIN_SRC python :noweb-ref "" :tangle __init__.py
+# exports __init__
+from ob_example.plotter.picture_output import *
+#__all__ = ["plotter.picture_output"] # optionally restrict further
+#+END_SRC
+
+#+begin_example
+  ,#+END_SRC
+#+end_example
+
+#+BEGIN_SRC python :noweb-ref "" :tangle plotter/__init__.py
+# exports
+from ob_example.utils.libutils import *
+#+END_SRC
+
+** Example Function and Test
+
+#+BEGIN_SRC python :session picoutput
+# exports
+@export
+def fun(x_num):
+    return (x_num-3)*(x_num-5)*(x_num-7)+85
+#+END_SRC
+
+#+RESULTS:
+
+A basic integral.
+
+#+BEGIN_SRC python :session output-test :noweb-ref "picture_output.test"
+def test_fun():
+    """Testing the base case for the integral"""
+    assert fun(3) == 85
+#+END_SRC
+
+Always include a test
+
+and when you find a bug and fixes it, make sure to add another test
+that ensures the fix works. Sometimes a fix breaks the function for
+other input that worked previously, so tests should accumulate.
+
+#+RESULTS:
+
+** Trapezoid approximation 
+
+We’re going to approximate the integral via the trapezoid rule and
+also calculate it to a finer degree.
+
+#+BEGIN_SRC python :session picoutput :noweb-ref "picture_output.main" :exports both :results output
+A, B = 1, 8 # the left and right boundaries
+#+END_SRC
+
+#+RESULTS:
+
+** Integral calculation
+
+I found the quad function from scipy for a precise integral
+calculation. For the trapezoid calculation, I found [[http://tutorial.math.lamar.edu/Classes/CalcII/ApproximatingDefIntegrals.aspx][this explanation]]
+similar to what many of us learn in our later school-years, but not
+sure how to do that in python. Let's experiment!
+
+#+BEGIN_SRC python :session picoutput :noweb-ref "picture_output.imports"
+from scipy.integrate import quad
+#+END_SRC
+
+#+RESULTS:
+
+#+BEGIN_SRC python :session picoutput :results output :exports both :noweb-ref "picture_output.main"
+INTEGRAL, ERROR = quad(fun, A, B)
+#<<trapz_calc_imports>>#
+#<<trapz_vars>>#
+INTEGRAL_TRAPEZOID = #<<trapz_calc>>#
+#+END_SRC
+
+#+RESULTS:
+: [1.   2.75 4.5  6.25 8.  ]
+: [ 37.        82.609375  86.875     81.953125 100.      ]
+
+** trapezoid calculation 
+
+To do a standard area calculation for a trapezoid we certainly need a
+number of x and y values.
+
+#+name: trapz_calc_imports
+#+BEGIN_SRC python :session picoutput :noweb-ref "picture_output.imports"
+import numpy as np
+#+END_SRC
+
+#+begin_example
+  ,#+BEGIN_SRC python :session picoutput :noweb-ref "trapz_vars" :exports both
+#+end_example
+
+#+BEGIN_SRC python :session picoutput :noweb-ref "trapz_vars" :exports both
+N = 5 # the number of points
+XINT = np.linspace(A, B, N)
+YINT = fun(XINT)
+print(XINT)
+print(YINT)
+#+END_SRC
+
+#+RESULTS:
+: [1.   2.75 4.5  6.25 8.  ]
+: [ 37.        82.609375  86.875     81.953125 100.      ]
+
+#+REVEAL: split
+
+We can sum and differentiate the Y and X arrays, before taking the
+product in a zip-like manner:
+
+#+BEGIN_SRC python :session picoutput :noweb-ref "" :exports both
+print(YINT[1:]+YINT[:-1])
+print(XINT[1:]-XINT[:-1])
+#+END_SRC
+
+#+RESULTS:
+: [119.609375 169.484375 168.828125 181.953125]
+: [1.75 1.75 1.75 1.75]
+
+Yes, that looks plausible. Is 1.75 really the x delta we defined
+earlier though?
+
+#+REVEAL: split
+
+Lets check with the values we entered before. 8-1 is the x range, and
+5 values would create 4 trapezoids, so:
+
+#+BEGIN_SRC python :session picoutput :noweb-ref "" :exports both
+print((8-1)/4)
+#+END_SRC
+
+#+RESULTS:
+: 1.75
+
+So it must be right.
+
+#+REVEAL: split
+
+Lets try and multiply two arrays as well:
+
+#+BEGIN_SRC python :session picoutput :noweb-ref "" :exports both
+(XINT[1:] - XINT[:-1]) * (YINT[1:] + YINT[:-1])
+#+END_SRC
+
+#+RESULTS:
+: array([209.31640625, 296.59765625, 295.44921875, 318.41796875])
+
+Looks correct also.
+
+#+REVEAL: split
+
+Then for the full calculation we just sum that and divide by 2 as
+explained why in more detail in the reference above:
+
+#+begin_example
+  ,#+BEGIN_SRC python :session picoutput :noweb-ref "trapz_calc" :exports both
+#+end_example
+
+#+BEGIN_SRC python :session picoutput :noweb-ref "trapz_calc" :exports both
+sum((XINT[1:] - XINT[:-1]) * (YINT[1:] + YINT[:-1]) / 2)
+#+END_SRC
+
+#+RESULTS:
+: 559.890625
+
+Now, lets see the difference between estimate and the
+precision-calculation!
+
+#+begin_example
+  ,#+BEGIN_SRC python :noweb-ref "picture_output.main" :session picoutput :exports both
+#+end_example
+
+#+BEGIN_SRC python :noweb-ref "picture_output.main" :session picoutput :exports both
+print("The integral is:", INTEGRAL, "+/-", ERROR)
+print("The trapezoid approximation with", len(XINT), "points is:",
+      INTEGRAL_TRAPEZOID)
+#+END_SRC
+
+#+RESULTS:
+: The integral is: 565.2499999999999 +/- 6.275535646693696e-12
+: The trapezoid approximation with 5 points is: 559.890625
+
+** Picture
+
+This code block will produce a plot of the function and our trapezoid
+approximation to the integral. We tell Org Babel to save the plot to
+a file (which Emacs can display inline) by typing =M-x
+org-toggle-inline-images RET=.
+
+#+BEGIN_SRC python :session picoutput :noweb-ref "picture_output.imports"
+import matplotlib.pyplot as plt
+#+END_SRC
+
+#+RESULTS:
+
+
+#+BEGIN_SRC python :session picoutput :results file :exports code :noweb-ref "picture_output.main"
+#%matplotlib inline
+XBAR = np.linspace(0, 10, 200)
+YBAR = fun(XBAR)
+plt.plot(XBAR, YBAR, lw=2)
+plt.axis([0, 9, 0, 140])
+plt.fill_between(XINT, 0, YINT, facecolor='gray', alpha=0.4)
+plt.text(0.5 * (A + B), 30,r"$\int_A^B fun(XBAR)dxbar$",
+	 horizontalalignment='center', fontsize=20);
+#+END_SRC
+
+#+RESULTS:
+[[file:./.ob-jupyter/3c32fb7c759f4aaa0f495849bb68683b4895955d.png]]
+
+** Picture output
+
+file:./.ob-jupyter/3c32fb7c759f4aaa0f495849bb68683b4895955d.png
+
+** CLI Arguments
+
+#+BEGIN_SRC python :session picoutput :tangle plotter/picture_output.py :noweb-ref "" :eval no-export
+# export
+if __name__ == "__main__":
+    main()
+#+END_SRC
+
+** Export
+
+#+begin_src python :session picoutput :eval no-export :noweb-ref ""
+#hide
+from nbdev.export import *
+notebook2script()
+#+end_src
+
+#+RESULTS:
+: Converted index.ipynb.
+: Converted testscript_temp.ipynb.
+
+** Run tests
+
+Tests can be executed directly from org-babel because it has support
+for most languages including shell/bash. So from this same
+source-file, we can enter ~C-c C-c~ on below src-block:
+
+#+BEGIN_SRC bash :noweb-ref "" :eval no-export :results output :session clitest :var path="/home/user1/src/nbdev-org-babel-example/nbs"
+#PYTHONPATH="${path}:$PYTHONPATH" python3 -m unittest -v \
+ nbs.picture_output_test 2>&1
+shopt -s globstar; cd "${path}/ob_example"; pytest . 2>/dev/null; cd -
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+
+user1@librem13v3guixsd ~/src/nbdev-org-babel-example/nbs$ bash: nbs.picture_output_test: command not found
+[1m============================================= test session starts ==============================================[0m
+platform linux -- Python 3.7.4, pytest-4.4.2, py-1.8.0, pluggy-0.11.0
+database=DirectoryBasedExampleDatabase('/home/user1/VirtualHome/src/nbdev-org-babel-example/nbs/ob_example/.hypothesis/examples')
+rootdir: /home/user1/VirtualHome/src/nbdev-org-babel-example
+plugins: hypothesis-4.18.3
+[1mcollecting ... [0m[1mcollecting 1 item                                                                                              [0m[1mcollected 1 item                                                                                               [0m
+][0m
+
+[33m=============================================== warnings summary ===============================================[0m
+/home/user1/.guix-profile/lib/python3.7/site-packages/matplotlib/backends/backend_gtk3.py:45
+  /home/user1/.guix-profile/lib/python3.7/site-packages/matplotlib/backends/backend_gtk3.py:45: DeprecationWarning: Gdk.Cursor.new is deprecated
+    cursors.MOVE          : Gdk.Cursor.new(Gdk.CursorType.FLEUR),
+
+-- Docs: https://docs.pytest.org/en/latest/warnings.html
+[33m[1m===================================== 1 passed, 1 warnings in 0.76 seconds =====================================[0m
+/home/user1/src/nbdev-org-babel-example/nbs
+#+end_example
+
+#+REVEAL: split
+
+#+BEGIN_SRC bash :noweb-ref "" :eval no-export :results output :exports both :session clitest :var path="/home/user1/src/nbdev-org-babel-example/nbs"
+cd "$path" ; PYTHONPATH="${path}:$PYTHONPATH" nbdev_test_nbs ; cd -
+#+END_SRC
+
+#+RESULTS:
+: 
+: testing: /home/user1/VirtualHome/src/nbdev-org-babel-example/nbs/index.ipynb
+: testing: /home/user1/VirtualHome/src/nbdev-org-babel-example/nbs/libutils_temp.ipynb
+: testing: /home/user1/VirtualHome/src/nbdev-org-babel-example/nbs/testscript_temp.ipynb
+: All tests are passing!
+: /home/user1/src/nbdev-org-babel-example/nbs
+
+
+#+REVEAL: split
+
+A functional test would be 
+
+#+BEGIN_SRC bash :noweb-ref "" :eval no-export :results output :exports both :session clitest :var path="/home/user1/src/nbdev-org-babel-example/nbs"
+cd "$path" ; PYTHONPATH="${path}:$PYTHONPATH" \
+		       python3 -c \
+		       'from ob_example import * ;\
+		       print(fun(3)) ;\
+		       plotter.picture_output.main() ;'
+echo ; echo $?
+#+END_SRC
+
+#+RESULTS:
+: 
+: > > > > 85
+: [1.   2.75 4.5  6.25 8.  ]
+: [ 37.        82.609375  86.875     81.953125 100.      ]
+: The integral is: 565.2499999999999 +/- 6.275535646693696e-12
+: The trapezoid approximation with 5 points is: 559.890625
+: 0
+
+#+REVEAL: split
+
+#+BEGIN_SRC bash :noweb-ref "" :eval no-export :results output :exports both :session clitest :var path="/home/user1/src/nbdev-org-babel-example/nbs"
+cd "$path" ; PYTHONPATH="${path}:$PYTHONPATH" \
+	  python3 -c \
+	  'from ob_example import * ;\
+	  print(fun(3)) ;\
+	  plotter.picture_output.main() ;'
+echo ; echo $?
+#+END_SRC
+
+#+RESULTS:
+: 
+: > > > > 85
+: [1.   2.75 4.5  6.25 8.  ]
+: [ 37.        82.609375  86.875     81.953125 100.      ]
+: The integral is: 565.2499999999999 +/- 6.275535646693696e-12
+: The trapezoid approximation with 5 points is: 559.890625
+: 0
+
+** Extra: libutils
+
+[[https://stackoverflow.com/a/35710527/7612826][Reference]]
+
+When importing the export function from this module, we can use
+@export as decorator for functions we want included in ~__all__~.
+
+#+BEGIN_SRC python :noweb-ref "" :tangle utils/libutils.py :session picoutput
+# export utils.libutils
+import sys
+def export(fn):
+    mod = sys.modules[fn.__module__]
+    if hasattr(mod, '__all__'):
+        mod.__all__.append(fn.__name__)
+    else:
+        mod.__all__ = [fn.__name__]
+    return fn
+#+END_SRC
+
+#+RESULTS:
+
+* COMMENT testing links
+
+hello [[val:org-my-foo]]
+
+* COMMENT babel settings
+  
+# Local Variables:
+# org-babel-noweb-wrap-start: "#<<"
+# org-babel-noweb-wrap-end: ">>#"
+# org-confirm-babel-evaluate: nil
+# org-src-preserve-indentation: t
+# org-my-foo: bar
+# org-my-aNumber: 32
+# End:

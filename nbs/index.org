@@ -1,0 +1,81 @@
+#+PROPERTY: header-args:python :shebang "#!/usr/bin/env python3" :eval no-export :noweb no-export :mkdirp yes
+#+PROPERTY: header-args:jupyter-python :shebang "#!/usr/bin/env python3" :eval no-export :noweb no-export :mkdirp yes
+
+# #+REVEAL_ROOT: https://cdn.jsdelivr.net/npm/reveal.js
+#+REVEAL_ROOT: file:///home/user1/src/reveal.js
+# This needs locally available reveal.js files (no CDN files)! Instructions to set location of reveal.js..
+#+OPTIONS: reveal_single_file:t
+
+#+REVEAL_INIT_OPTIONS: width:1200, height:800, margin: 0.1, minScale:0.2, maxScale:2.5, transition:'cube'
+
+# file:///d:/reveal.js
+
+# Export defaults
+# Toggle TeX-like syntax for sub- and superscripts. If you write
+# "^:{}", b{b}b-:t will be interpreted, but the simple bbb-:t will be
+# left as it is (org-export-with-sub-superscripts).
+#+OPTIONS: ^:{}
+
+# Export with latex interpreted
+#+OPTIONS: tex:t
+# #+OPTIONS: tex:t
+
+# Export with footnotes
+#+OPTIONS: f:t
+
+# Export with emphasized text
+#+OPTIONS: *:t
+
+# nil does not export; t exports; verbatim keeps everything in verbatim (org-export-with-latex). 
+#+OPTIONS: tex:verbatim
+
+# Export with special strings
+# #+OPTIONS: -:t
+
+# Export with tables
+#+OPTIONS: |:t
+
+# Export with fixed-width
+#+OPTIONS: ::t
+
+# Only keep the first level in table-of-contents
+# #+OPTIONS: toc:1
+# edit: create separate
+#+OPTIONS: toc:nil
+
+#+TITLE: An nbdev-org-babel example
+#+SUMMARY: Literate Programming using nbdev, org-babel and emacs-jupyter
+
+* Installation
+
+There are currently (as of 2020-05-29) many unmentioned dependencies
+in nbdev-org-babel, such as ox-ipynb, xq, moreutils (sponge) and
+various emacs libraries. Checkout the bash script in the source code
+in nbdev-org-babel, to figure those out if you are missing some. I
+hope nbdev-org-babel gets rewritten in python and merged to fastai's
+nbdev master in some distant future.
+
+Install procedure(assuming you have dependencies installed):
+
+~git clone https://github.com/methuselah-0/nbdev-org-babel.git~
+
+~cd to nbdev-org-babel~
+
+~pip install -e .~
+
+~cd ~/src~
+
+~nbdev_new my_new_project~
+
+~cd my_new_project~
+
+# edit the settings.ini file as you normally would with any nbdev project
+
+create an index.org file in your nbs_path directory.
+
+create a directory inside the nbs_path directory with the same name as lib_name (as defined in settings.ini)
+
+create your literate program in ~/src/nbs_path/lib_name/my_project.org
+
+Finally, run ~nbdev_build_docs_from_org~ which will create the needed
+library and documentation for your project.
