@@ -73,9 +73,9 @@ Install procedure(assuming you have dependencies installed):
 
 create an index.org file in your nbs_path directory.
 
-create a directory inside the nbs_path directory with the same name as lib_name (as defined in settings.ini)
+create a directory inside the ~nbs_path~ directory with the same name as ~lib_name~ (as defined in settings.ini)
 
-create your literate program in ~/src/nbs_path/lib_name/my_project.org
+create your literate program in =~/src/nbs_path/lib_name/my_project.org=
 
 Finally, run ~nbdev_build_docs_from_org~ which will create the needed
 library and documentation for your project.
