@@ -11,7 +11,7 @@
 
 
 See [this link](https://methuselah-0.github.io/nbdev-org-babel-example//) for the jekyll website documentation generated using
-nbdev<sub>build</sub><sub>docs</sub><sub>from</sub><sub>org</sub>.
+`nbdev_build_docs_from_org`.
 
 There are currently (as of 2020-05-29) many unmentioned dependencies
 in nbdev-org-babel, such as ox-ipynb, xq, moreutils (sponge) and
