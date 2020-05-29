@@ -86,6 +86,8 @@ create a directory inside the ~nbs_path~ directory with the same name as ~lib_na
 
 create your literate program in =~/src/nbs_path/lib_name/my_project.org=
 
+Run ~nbdev_install_git_hooks~.
+
 Finally, run ~nbdev_build_docs_from_org~ which will create the needed
 library and documentation for your project.
 
