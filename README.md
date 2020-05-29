@@ -10,6 +10,9 @@
 
 
 
+See [this link](https://methuselah-0.github.io/nbdev-org-babel-example//) for the jekyll website documentation generated using
+nbdev<sub>build</sub><sub>docs</sub><sub>from</sub><sub>org</sub>.
+
 There are currently (as of 2020-05-29) many unmentioned dependencies
 in nbdev-org-babel, such as ox-ipynb, xq, moreutils (sponge) and
 various emacs libraries. Checkout the bash script in the source code
@@ -31,6 +34,14 @@ Install procedure(assuming you have dependencies installed):
 
 `cd my_new_project`
 
+Edit the settings.ini file as you normally would with any nbdev project.
+
+However, make sure that the following two settings correspond to the github repo name isntead of the defaults:
+
+`doc_baseurl = /nbdev-org-babel-example/`
+
+`git_url = https://github.com/%(user)s/nbdev-org-babel-example/tree/%(branch)s/`
+
 create an index.org file in your nbs<sub>path</sub> directory.
 
 create a directory inside the `nbs_path` directory with the same name as `lib_name` (as defined in settings.ini)
@@ -39,5 +50,10 @@ create your literate program in `~/src/nbs_path/lib_name/my_project.org`
 
 Finally, run `nbdev_build_docs_from_org` which will create the needed
 library and documentation for your project.
+
+Note that if you don't want to run the whole procedure from org-files,
+to ipynb files to building the docs, you can do for example
+`nbdev_build_docs --force_all '*'` to just rebuild the html docs from
+current ipynb files.
 
 
