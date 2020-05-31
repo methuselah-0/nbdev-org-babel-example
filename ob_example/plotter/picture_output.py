@@ -5,6 +5,7 @@ __all__ = ['fun', 'main', 'fun']
 # Cell
 """Use numpy and scipy to produce a picture"""
 from ..utils.libutils import export
+# from ob_example.utils.libutils import export
 from scipy.integrate import quad
 import numpy as np
 import matplotlib.pyplot as plt
@@ -37,9 +38,6 @@ def main():
     plt.fill_between(XINT, 0, YINT, facecolor='gray', alpha=0.4)
     plt.text(0.5 * (A + B), 30,r"$\int_A^B fun(XBAR)dxbar$",
     	 horizontalalignment='center', fontsize=20);
-
-# Cell
-from ..utils.libutils import *
 
 # Cell
 @export

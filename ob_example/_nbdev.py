@@ -7,7 +7,6 @@ index = {"fun": "testscript_temp.ipynb",
          "export": "testscript_temp.ipynb"}
 
 modules = ["plotter/picture_output.py",
-           "__init__.py",
            "utils/libutils.py"]
 
 doc_url = "https://methuselah-0.github.io/nbdev-org-babel-example/"

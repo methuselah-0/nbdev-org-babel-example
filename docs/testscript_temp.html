@@ -83,6 +83,7 @@ from all subheaders:</p>
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="sd">&quot;&quot;&quot;Use numpy and scipy to produce a picture&quot;&quot;&quot;</span>
 <span class="kn">from</span> <span class="nn">ob_example.utils.libutils</span> <span class="kn">import</span> <span class="n">export</span>
+<span class="c1"># from ob_example.utils.libutils import export</span>
 <span class="kn">from</span> <span class="nn">scipy.integrate</span> <span class="kn">import</span> <span class="n">quad</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
@@ -138,7 +139,7 @@ from all subheaders:</p>
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="fun" class="doc_header"><code>fun</code><a href="https://github.com/methuselah-0/nbdev-org-babel-example/tree/master/ob_example/plotter/picture_output.py#L45" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>fun</code>(<strong><code>x_num</code></strong>)</p>
+<h4 id="fun" class="doc_header"><code>fun</code><a href="https://github.com/methuselah-0/nbdev-org-babel-example/tree/master/ob_example/plotter/picture_output.py#L43" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>fun</code>(<strong><code>x_num</code></strong>)</p>
 </blockquote>
 
 </div>
@@ -235,7 +236,7 @@ create any main-code</p>
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="main" class="doc_header"><code>main</code><a href="https://github.com/methuselah-0/nbdev-org-babel-example/tree/master/ob_example/plotter/picture_output.py#L18" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>main</code>()</p>
+<h4 id="main" class="doc_header"><code>main</code><a href="https://github.com/methuselah-0/nbdev-org-babel-example/tree/master/ob_example/plotter/picture_output.py#L19" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>main</code>()</p>
 </blockquote>
 
 </div>
@@ -307,8 +308,7 @@ header argument. <a href="https://stackoverflow.com/a/49375740/7612826">Relative
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">ob_example.plotter.picture_output</span> <span class="kn">import</span> <span class="o">*</span>
-<span class="c1">#__all__ = [&quot;plotter.picture_output&quot;] # optionally restrict further</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># from ob_example.plotter.picture_output import *</span>
 </pre></div>
 
     </div>
@@ -321,7 +321,12 @@ header argument. <a href="https://stackoverflow.com/a/49375740/7612826">Relative
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 
-<pre><code>#+END_SRC</code></pre>
+<pre><code>#+END_SRC
+
+</code></pre>
+<p>TODO: consider # exports plotter._<sub>init</sub>__
+note that nbdev<sub>diff</sub><sub>nbs</sub> fails when using #exports <span class="underline"><span class="underline">init</span>&lt;/span&gt; above</p>
+<p>:noweb-ref "" :exports plotter._<sub>init</sub>__</p>
 
 </div>
 </div>
@@ -333,7 +338,7 @@ header argument. <a href="https://stackoverflow.com/a/49375740/7612826">Relative
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">ob_example.utils.libutils</span> <span class="kn">import</span> <span class="o">*</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># from ob_example.utils.libutils import export</span>
 </pre></div>
 
     </div>
@@ -379,7 +384,7 @@ header argument. <a href="https://stackoverflow.com/a/49375740/7612826">Relative
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="fun" class="doc_header"><code>fun</code><a href="https://github.com/methuselah-0/nbdev-org-babel-example/tree/master/ob_example/plotter/picture_output.py#L45" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>fun</code>(<strong><code>x_num</code></strong>)</p>
+<h4 id="fun" class="doc_header"><code>fun</code><a href="https://github.com/methuselah-0/nbdev-org-babel-example/tree/master/ob_example/plotter/picture_output.py#L43" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>fun</code>(<strong><code>x_num</code></strong>)</p>
 </blockquote>
 
 </div>
@@ -907,7 +912,7 @@ for most languages including shell/bash. So from this same
 source-file, we can enter <code>C-c C-c</code> on below src-block:</p>
 
 <pre><code>#PYTHONPATH="${path}:$PYTHONPATH" python3 -m unittest -v \
- nbs.picture_output_test 2&gt;&amp;1
+# nbs.picture_output_test 2&gt;&amp;1
 shopt -s globstar; cd "${path}/ob_example"; pytest . 2&gt;/dev/null; cd -
 
 cd "$path" ; PYTHONPATH="${path}:$PYTHONPATH" nbdev_test_nbs ; cd -
@@ -924,9 +929,9 @@ echo ; echo $?
 
 cd "$path" ; PYTHONPATH="${path}:$PYTHONPATH" \
       python3 -c \
-      'from ob_example import * ;\
+      'from ob_example.plotter.picture_output import fun, main ;\
       print(fun(3)) ;\
-      plotter.picture_output.main() ;'
+      main() ;'
 echo ; echo $?</code></pre>
 
 </div>

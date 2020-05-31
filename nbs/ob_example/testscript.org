@@ -140,18 +140,18 @@ header argument. [[https://stackoverflow.com/a/49375740/7612826][Relative import
 #+end_example
 
 #+BEGIN_SRC python :noweb-ref "" :tangle __init__.py
-# exports __init__
-from ob_example.plotter.picture_output import *
-#__all__ = ["plotter.picture_output"] # optionally restrict further
+# from ob_example.plotter.picture_output import *
 #+END_SRC
 
 #+begin_example
   ,#+END_SRC
 #+end_example
 
-#+BEGIN_SRC python :noweb-ref "" :tangle plotter/__init__.py
-# exports
-from ob_example.utils.libutils import *
+TODO: consider # exports plotter.__init__
+note that nbdev_diff_nbs fails when using #exports __init__ above
+
+#+BEGIN_SRC python :noweb-ref "picture_output.imports" :tangle plotter/__init__.py
+# from ob_example.utils.libutils import export
 #+END_SRC
 
 ** Example Function and Test
@@ -379,15 +379,14 @@ source-file, we can enter ~C-c C-c~ on below src-block:
 
 #+BEGIN_SRC bash :noweb-ref "" :eval no-export :results output :session clitest :var path="/home/user1/src/nbdev-org-babel-example/nbs"
 #PYTHONPATH="${path}:$PYTHONPATH" python3 -m unittest -v \
- nbs.picture_output_test 2>&1
+# nbs.picture_output_test 2>&1
 shopt -s globstar; cd "${path}/ob_example"; pytest . 2>/dev/null; cd -
 #+END_SRC
 
 #+RESULTS:
 #+begin_example
 
-user1@librem13v3guixsd ~/src/nbdev-org-babel-example/nbs$ bash: nbs.picture_output_test: command not found
-[1m============================================= test session starts ==============================================[0m
+user1@librem13v3guixsd ~/src/nbdev-org-babel-example/nbs$ user1@librem13v3guixsd ~/src/nbdev-org-babel-example/nbs$ [1m============================================= test session starts ==============================================[0m
 platform linux -- Python 3.7.4, pytest-4.4.2, py-1.8.0, pluggy-0.11.0
 database=DirectoryBasedExampleDatabase('/home/user1/VirtualHome/src/nbdev-org-babel-example/nbs/ob_example/.hypothesis/examples')
 rootdir: /home/user1/VirtualHome/src/nbdev-org-babel-example
@@ -401,7 +400,7 @@ plugins: hypothesis-4.18.3
     cursors.MOVE          : Gdk.Cursor.new(Gdk.CursorType.FLEUR),
 
 -- Docs: https://docs.pytest.org/en/latest/warnings.html
-[33m[1m===================================== 1 passed, 1 warnings in 0.76 seconds =====================================[0m
+[33m[1m===================================== 1 passed, 1 warnings in 0.72 seconds =====================================[0m
 /home/user1/src/nbdev-org-babel-example/nbs
 #+end_example
 
@@ -435,21 +434,19 @@ echo ; echo $?
 
 #+RESULTS:
 : 
-: > > > > 85
-: [1.   2.75 4.5  6.25 8.  ]
-: [ 37.        82.609375  86.875     81.953125 100.      ]
-: The integral is: 565.2499999999999 +/- 6.275535646693696e-12
-: The trapezoid approximation with 5 points is: 559.890625
+: > > > > Traceback (most recent call last):
+: ", line 2, in <module>
+: NameError: name 'fun' is not defined
 : 0
 
 #+REVEAL: split
 
-#+BEGIN_SRC bash :noweb-ref "" :eval no-export :results output :exports both :session clitest :var path="/home/user1/src/nbdev-org-babel-example/nbs"
+#+BEGIN_SRC bash :noweb-ref "" :eval no-export :results output :exports both :session clitest :var path="/home/user1/src/nbdev-org-babel-example"
 cd "$path" ; PYTHONPATH="${path}:$PYTHONPATH" \
 	  python3 -c \
-	  'from ob_example import * ;\
+	  'from ob_example.plotter.picture_output import fun, main ;\
 	  print(fun(3)) ;\
-	  plotter.picture_output.main() ;'
+	  main() ;'
 echo ; echo $?
 #+END_SRC
 
