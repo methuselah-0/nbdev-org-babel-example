@@ -62,9 +62,10 @@ nbdev master in some distant future.</p>
 <p>However, make sure that the following two settings correspond to the github repo name isntead of the defaults:</p>
 <p><code>doc_baseurl = /nbdev-org-babel-example/</code></p>
 <p><code>git_url = https://github.com/%(user)s/nbdev-org-babel-example/tree/%(branch)s/</code></p>
-<p>create an index.org file in your nbs<sub>path</sub> directory.</p>
+<p>create an index.org file in your <code>nbs_path</code> directory.</p>
 <p>create a directory inside the <code>nbs_path</code> directory with the same name as <code>lib_name</code> (as defined in settings.ini)</p>
-<p>create your literate program in <code>~/src/nbs_path/lib_name/my_project.org</code></p>
+<p>create your literate program in <code>/path/to/repo_name/nbs_path/lib_name/my_project.org</code></p>
+<p>create index.org in <code>/path/to/repo_name/nbs_path/</code>.</p>
 <p>Run <code>nbdev_install_git_hooks</code>.</p>
 <p>Finally, run <code>nbdev_build_docs_from_org</code> which will create the needed
 library and documentation for your project.</p>
@@ -72,6 +73,18 @@ library and documentation for your project.</p>
 to ipynb files to building the docs, you can do for example
 <code>nbdev_build_docs --force_all '*'</code> to just rebuild the html docs from
 current ipynb files.</p>
+<p>To see the results of the <code>.github/workflows/main.yml</code> CI-definition;
+<code>Click Actions -&gt; Click some commit-message -&gt; Click Build in the left
+pane -&gt; Click the 3 dots in the upper right corner -&gt; view raw logs</code></p>
+<p>If you are using some dependency packages, make sure to add those in
+<code>settings.ini</code> under requirements, e.g. <code>requirements = scipy&gt;=1.4.1
+numpy&gt;=1.18.4 matplotlib&gt;=3.2.1</code>.</p>
+<p>Also, see <a href="https://nbdev.fast.ai/tutorial/#Set-up-console-scripts">how to setup console scripts</a>, and <a href="https://nbdev.fast.ai/tutorial/#Upload-to-pypi">how to upload your project
+to pypi</a>. However, you might find 2 problems out-of-the-box when
+running <code>make release</code>. In the Makefile from the nbdev template
+project, you may need to change <code>python3 setup.py sdist bdist_wheel</code>
+to <code>python3 set...</code>. Secondly, you may need to install the wheel
+and twine packages: <code>pip install wheel</code>.</p>
 
 </div>
 </div>

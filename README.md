@@ -42,11 +42,13 @@ However, make sure that the following two settings correspond to the github repo
 
 `git_url = https://github.com/%(user)s/nbdev-org-babel-example/tree/%(branch)s/`
 
-create an index.org file in your nbs<sub>path</sub> directory.
+create an index.org file in your `nbs_path` directory.
 
 create a directory inside the `nbs_path` directory with the same name as `lib_name` (as defined in settings.ini)
 
-create your literate program in `~/src/nbs_path/lib_name/my_project.org`
+create your literate program in `/path/to/repo_name/nbs_path/lib_name/my_project.org`
+
+create index.org in `/path/to/repo_name/nbs_path/`.
 
 Run `nbdev_install_git_hooks`.
 
@@ -57,6 +59,21 @@ Note that if you don't want to run the whole procedure from org-files,
 to ipynb files to building the docs, you can do for example
 `nbdev_build_docs --force_all '*'` to just rebuild the html docs from
 current ipynb files.
+
+To see the results of the `.github/workflows/main.yml` CI-definition;
+`Click Actions -> Click some commit-message -> Click Build in the left
+pane -> Click the 3 dots in the upper right corner -> view raw logs`
+
+If you are using some dependency packages, make sure to add those in
+`settings.ini` under requirements, e.g. `requirements = scipy>=1.4.1
+numpy>=1.18.4 matplotlib>=3.2.1`.
+
+Also, see [how to setup console scripts](https://nbdev.fast.ai/tutorial/#Set-up-console-scripts), and [how to upload your project
+to pypi](https://nbdev.fast.ai/tutorial/#Upload-to-pypi). However, you might find 2 problems out-of-the-box when
+running `make release`. In the Makefile from the nbdev template
+project, you may need to change `python3 setup.py sdist bdist_wheel`
+to `python3 set...`. Secondly, you may need to install the wheel
+and twine packages: `pip install wheel`.
 
 
 
