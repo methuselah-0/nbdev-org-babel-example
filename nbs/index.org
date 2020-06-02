@@ -107,7 +107,11 @@ If you are using some dependency packages, make sure to add those in
 numpy>=1.18.4 matplotlib>=3.2.1~.
 
 Also, see [[https://nbdev.fast.ai/tutorial/#Set-up-console-scripts][how to setup console scripts]], and [[https://nbdev.fast.ai/tutorial/#Upload-to-pypi][how to upload your project
-to pypi]].
+to pypi]]. However, you might find 2 problems out-of-the-box when
+running =make release=. In the Makefile from the nbdev template
+project, you may need to change =python3 setup.py sdist bdist_wheel=
+to =python3 set...=. Secondly, you may need to install the wheel
+and twine packages: ~pip install wheel~.
 
 * Emacs Python Setup Suggestions
 
