@@ -82,9 +82,9 @@ numpy&gt;=1.18.4 matplotlib&gt;=3.2.1</code>.</p>
 <p>Also, see <a href="https://nbdev.fast.ai/tutorial/#Set-up-console-scripts">how to setup console scripts</a>, and <a href="https://nbdev.fast.ai/tutorial/#Upload-to-pypi">how to upload your project
 to pypi</a>. However, you might find 2 problems out-of-the-box when
 running <code>make release</code>. In the Makefile from the nbdev template
-project, you may need to change <code>python3 setup.py sdist bdist_wheel</code>
+project, you may need to change <code>python setup.py sdist bdist_wheel</code>
 to <code>python3 set...</code>. Secondly, you may need to install the wheel
-and twine packages: <code>pip install wheel</code>.</p>
+and twine packages: <code>pip install wheel twine</code>.</p>
 
 </div>
 </div>
